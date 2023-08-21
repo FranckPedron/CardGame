@@ -3,17 +3,10 @@ package com.franckycorp.controller;
 import com.franckycorp.model.Deck;
 import com.franckycorp.model.Player;
 import com.franckycorp.model.PlayingCard;
+import com.franckycorp.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
-
-class View {
-    public void something() {
-    }
-
-    public void setController(GameController gc) {
-    }
-}
 
 public class GameController {
 
@@ -38,28 +31,29 @@ public class GameController {
 
     public void run() {
         while (gameState == GameState.AddingPlayers) {
-            view.something();
+            view.promptForPlayerName();
         }
 
         switch (gameState) {
-            case CardsDealt -> view.something();
-            case WinnerRevealed -> view.something();
+            case CardsDealt -> view.promptForFlip();
+            case WinnerRevealed -> view.promptForNewGame();
         }
     }
 
     public void addPlayer(String playerName) {
         if (gameState == GameState.AddingPlayers) {
             players.add(new Player(playerName));
-            view.something();
+            view.showPlayerName(players.size(), playerName);
         }
     }
 
     public void startGame() {
         if (gameState != GameState.CardsDealt) {
             deck.shuffle();
+            int playerIndex = 1;
             for (Player player: players) {
                 player.addCardToHand(deck.removeTopCard());
-                view.something();
+                view.showFaceDownCardForPlayer(playerIndex++, player.getName());
             }
             gameState = GameState.CardsDealt;
         }
@@ -67,10 +61,11 @@ public class GameController {
     }
 
     public void flipCards() {
+        int playerIndex = 1;
         for (Player player: players) {
             PlayingCard pc = player.getCard(0);
             pc.flip();
-            view.something();
+            view.showCardForPlayer(playerIndex++, player.getName(), pc.getRank().toString(), pc.getSuit().toString());
         }
 
         evaluateWinner();
@@ -120,7 +115,7 @@ public class GameController {
     }
 
     private void displayWinner() {
-        view.something();
+        view.showWinner(winner.getName());
     }
 
 }
