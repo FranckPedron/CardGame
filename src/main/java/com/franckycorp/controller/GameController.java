@@ -106,6 +106,7 @@ public class GameController {
                 bestSuit = pc.getSuit().value();
             }
         }
+        winner = bestPlayer;
     }
 
     private void rebuildDeck() {
