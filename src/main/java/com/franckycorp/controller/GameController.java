@@ -4,7 +4,7 @@ import com.franckycorp.games.GameEvaluator;
 import com.franckycorp.model.Deck;
 import com.franckycorp.model.Player;
 import com.franckycorp.model.PlayingCard;
-import com.franckycorp.view.View;
+import com.franckycorp.view.GameViewable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,12 +18,12 @@ public class GameController {
     Deck deck;
     List<Player> players;
     Player winner;
-    View view;
+    GameViewable view;
 
     GameState gameState;
     GameEvaluator evaluator;
 
-    public GameController(Deck deck, View view, GameEvaluator evaluator) {
+    public GameController(Deck deck, GameViewable view, GameEvaluator evaluator) {
         this.deck = deck;
         this.view = view;
         this.players = new ArrayList<Player>();
@@ -82,14 +82,25 @@ public class GameController {
         winner = evaluator.evaluateWinner(players);
     }
 
-    private void rebuildDeck() {
+    void rebuildDeck() {
         for (Player player: players) {
             deck.returnCardToDeck(player.removeCard());
         }
     }
 
-    private void displayWinner() {
+    void displayWinner() {
         view.showWinner(winner.getName());
     }
 
+    void exitGame() {
+        System.exit(0);
+    }
+
+    public void nextAction(String nextChoice) {
+        if ("+q".equals(nextChoice)) {
+            exitGame();
+        } else {
+            startGame();
+        }
+    }
 }
