@@ -1,4 +1,9 @@
-package com.franckycorp.model;
+package com.franckycorp;
+
+import com.franckycorp.model.Deck;
+import com.franckycorp.model.NormalDeck;
+import com.franckycorp.model.SmallDeck;
+import com.franckycorp.model.TestDeck;
 
 public class DeckFactory {
     public enum DeckType {
