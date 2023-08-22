@@ -5,20 +5,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class Deck {
+public abstract class Deck {
 
-    private List<PlayingCard> cards;
-
-    public Deck() {
-        cards = new ArrayList<PlayingCard>();
-        for (Rank rank : Rank.values()) {
-          for (Suit suit : Suit.values()) {
-              cards.add(new PlayingCard(rank, suit));
-          }
-        }
-
-        shuffle();
-    }
+    protected List<PlayingCard> cards;
 
     public void shuffle() {
         Random random = new Random();
