@@ -1,10 +1,10 @@
 package com.franckycorp.games;
 
-import com.franckycorp.model.Player;
+import com.franckycorp.model.IPlayer;
 
 import java.util.List;
 
 public interface GameEvaluator {
 
-    Player evaluateWinner(List<Player> players);
+    IPlayer evaluateWinner(List<IPlayer> players);
 }

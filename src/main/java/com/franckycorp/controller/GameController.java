@@ -1,9 +1,7 @@
 package com.franckycorp.controller;
 
 import com.franckycorp.games.GameEvaluator;
-import com.franckycorp.model.Deck;
-import com.franckycorp.model.Player;
-import com.franckycorp.model.PlayingCard;
+import com.franckycorp.model.*;
 import com.franckycorp.view.GameViewable;
 
 import java.util.ArrayList;
@@ -16,8 +14,8 @@ public class GameController {
     }
 
     Deck deck;
-    List<Player> players;
-    Player winner;
+    List<IPlayer> players;
+    IPlayer winner;
     GameViewable view;
 
     GameState gameState;
@@ -26,7 +24,7 @@ public class GameController {
     public GameController(Deck deck, GameViewable view, GameEvaluator evaluator) {
         this.deck = deck;
         this.view = view;
-        this.players = new ArrayList<Player>();
+        this.players = new ArrayList<IPlayer>();
         this.gameState = GameState.AddingPlayers;
         this.evaluator = evaluator;
         view.setController(this);
@@ -54,9 +52,9 @@ public class GameController {
         if (gameState != GameState.CardsDealt) {
             deck.shuffle();
             int playerIndex = 1;
-            for (Player player: players) {
-                player.addCardToHand(deck.removeTopCard());
-                view.showFaceDownCardForPlayer(playerIndex++, player.getName());
+            for (IPlayer IPlayer : players) {
+                IPlayer.addCardToHand(deck.removeTopCard());
+                view.showFaceDownCardForPlayer(playerIndex++, IPlayer.getName());
             }
             gameState = GameState.CardsDealt;
         }
@@ -65,10 +63,10 @@ public class GameController {
 
     public void flipCards() {
         int playerIndex = 1;
-        for (Player player: players) {
-            PlayingCard pc = player.getCard(0);
+        for (IPlayer IPlayer : players) {
+            PlayingCard pc = IPlayer.getCard(0);
             pc.flip();
-            view.showCardForPlayer(playerIndex++, player.getName(), pc.getRank().toString(), pc.getSuit().toString());
+            view.showCardForPlayer(playerIndex++, IPlayer.getName(), pc.getRank().toString(), pc.getSuit().toString());
         }
 
         evaluateWinner();
@@ -79,12 +77,12 @@ public class GameController {
     }
 
     void evaluateWinner() {
-        winner = evaluator.evaluateWinner(players);
+        winner = new WiningPlayer(evaluator.evaluateWinner(players));
     }
 
     void rebuildDeck() {
-        for (Player player: players) {
-            deck.returnCardToDeck(player.removeCard());
+        for (IPlayer IPlayer : players) {
+            deck.returnCardToDeck(IPlayer.removeCard());
         }
     }
 

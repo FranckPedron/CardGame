@@ -1,24 +1,24 @@
 package com.franckycorp.games;
 
-import com.franckycorp.model.Player;
+import com.franckycorp.model.IPlayer;
 import com.franckycorp.model.PlayingCard;
 
 import java.util.List;
 
 public class HighCardGameEvaluator implements GameEvaluator {
     @Override
-    public Player evaluateWinner(List<Player> players) {
-        Player bestPlayer = null;
+    public IPlayer evaluateWinner(List<IPlayer> players) {
+        IPlayer bestPlayer = null;
         int bestRank = -1;
         int bestSuit = -1;
 
-        for (Player player : players) {
+        for (IPlayer IPlayer : players) {
             boolean newBestPlayer = false;
 
             if (bestPlayer == null) {
                 newBestPlayer = true;
             } else {
-                PlayingCard pc = player.getCard(0);
+                PlayingCard pc = IPlayer.getCard(0);
                 int thisRank = pc.getRank().value();
                 if (thisRank >= bestRank) {
                     if (thisRank > bestRank) {
@@ -32,8 +32,8 @@ public class HighCardGameEvaluator implements GameEvaluator {
             }
 
             if (newBestPlayer) {
-                bestPlayer = player;
-                PlayingCard pc = player.getCard(0);
+                bestPlayer = IPlayer;
+                PlayingCard pc = IPlayer.getCard(0);
                 bestRank = pc.getRank().value();
                 bestSuit = pc.getSuit().value();
             }
